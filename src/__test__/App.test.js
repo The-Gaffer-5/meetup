@@ -22,3 +22,7 @@ beforeAll(() => {
     expect(AppWrapper.find(NumberOfEvents)).toHaveLength(1);
   })
 });
+
+describe('<App /> integration', () => {
+  
+})
