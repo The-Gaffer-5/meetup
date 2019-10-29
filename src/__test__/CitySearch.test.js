@@ -29,7 +29,8 @@ describe('<CitySearch /> component', () => {
         expect(CitySearchWrapper.find('.suggestions li').at(i).text()).toBe(suggestions[i].name_string);
       }
     });
-    test('click on suggestion should change query state', () => {
+    test('click on suggestion should change query state and empty the list of suggestions', () => {
+      CitySearchWrapper = shallow(<CitySearch updateEvents={() => {}}/>)
       CitySearchWrapper.setState({
         suggestions: [
           {
@@ -53,9 +54,10 @@ describe('<CitySearch /> component', () => {
           }
         ]
       });
-
+      expect(CitySearchWrapper.find('.suggestions li')).toHaveLength(2);
       CitySearchWrapper.find('.suggestions li').at(0).simulate('click');
       expect(CitySearchWrapper.state('query')).toBe('Munich, Germany');
+      expect(CitySearchWrapper.find('.suggestions li')).toHaveLength(0);
     });
 });
 
