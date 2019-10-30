@@ -1,22 +1,40 @@
 import React, {Component} from 'react';
 import { getSuggestions } from './api';
+import { InfoAlert } from './Alert';
 
 class CitySearch extends Component {
     state = {
         query: '',
-        suggestions: []
+        suggestions: [],
+        infoText: ''
     }
     handleInputChanged = (event) => {
         const value = event.target.value;
         this.setState({ query: value });
-        getSuggestions(value).then(suggestions => this.setState({ suggestions }));
+        getSuggestions(value).then(suggestions => {
+            this.setState({ suggestions });
+
+            if (value && suggestions.length === 0) {
+                this.setState({
+                    infoText: 'We cannot find the city you are looking for!'
+                });
+            } else {
+                this.setState({
+                    infoText: '',
+                });
+            }
+        })
+    
     }
-    handleItemClicked = (value) => {
-        this.setState({ query: value });
+    handleItemClicked = (value, lat, lon) => {
+        this.setState({ query: value, suggestions: [] });
+        this.props.updateEvents(lat, lon);
     }
     render() {
         return(
         <div className="CitySearch">
+            <InfoAlert text={this.state.infoText} />
+            <h5>Enter a city:</h5>
             <input
                 type="text"
                 className="city"
@@ -25,7 +43,7 @@ class CitySearch extends Component {
             />
             <ul className="suggestions">
                 {this.state.suggestions.map(item => 
-                    <li onClick={() => this.handleItemClicked(item.name_string)} key={item.name_string}>{item.name_string}</li>    
+                    <li key={item.name_string} onClick={() => this.handleItemClicked(item.name_string, item.lat, item.lon)}>{item.name_string}</li>    
                 )}
             </ul>
          </div>

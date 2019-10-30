@@ -49,7 +49,3 @@ describe('<App /> integration', () => {
     AppWrapper.unmount();
   })
 })
-
-// describe('<App /> component', () => {
-
-// })
