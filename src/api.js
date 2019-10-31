@@ -41,7 +41,10 @@ async function getEvents(lat, lon, page) {
   if (window.location.href.startsWith('http://localhost')) {
     return mockEvents.events;
 }
-
+if(!navigator.onLine) {
+  const events = localStorage.getItem('lastEvents');
+  return JSON.parse(events);
+}
 const token = await getAccessToken();
 if (token) {
   let url = 'https://api.meetup.com/find/upcoming_events?&sign=true&photo-host=public'
@@ -54,7 +57,12 @@ if (token) {
     url += '&page=' + page;
   }
   const result = await axios.get(url);
-  return result.data.events;
+  const events = result.data.events;
+  if (events.length) { // Check if the events exist
+    localStorage.setItem('lastEvents', JSON.stringify(events));
+  }
+
+  return events;
 }
 
 }
