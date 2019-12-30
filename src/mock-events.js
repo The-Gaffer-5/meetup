@@ -332,5 +332,4 @@ const mockEvents =
       }
     ]
   }
-
 export { mockEvents }

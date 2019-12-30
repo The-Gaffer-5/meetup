@@ -5,13 +5,11 @@ class Alert extends Component {
         super(props);
         this.color = null;
     }
-
     getStyle = () => {
         return {
             color: this.color,
         };
     }
-
     render() {
         return(
             <div className="Alert">
@@ -38,7 +36,7 @@ class ErrorAlert extends Alert {
 class OfflineAlert extends Alert {
     constructor(props) {
         super(props);
-        this.color = 'yellow'
+        this.color = 'black'
     }
 }
 

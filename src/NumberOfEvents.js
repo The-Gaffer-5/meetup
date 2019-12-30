@@ -18,8 +18,7 @@ class NumberOfEvents extends Component {
         }
     }
     render(){
-        return(
-            
+        return(           
             <div className="numberOfEventsClass">
                 <ErrorAlert text={this.state.infoText} />
                 <h5>Number of Events Shown</h5>

@@ -4,26 +4,43 @@ class Event extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            events: [],
-            showDetails: false
+            filteredevents: [],
+            showDetails: false,
+            backgroundNum: ''
         }
     }
-    detailShow() {
-        this.setState({ showDetails: true })
-    }
+    componentDidMount() {
+        this.generateBkgd()
+    } 
     detailHide() {
         this.setState({ showDetails:false })
     }
+    generateBkgd = () => {
+        const ranNum = Math.floor(Math.random() * 12) + 1
+        this.setState({backgroundNum: ranNum})
+    }
+
+    getData = () => {
+        const rsvped = this.props.event.yes_rsvp_count;
+        const max = this.props.event.rsvp_limit;
+        const openings = max - rsvped
+
+        return (
+            [
+                {"name": "Reserved", "value": rsvped},
+                {"name": "Spots Left", "value": openings}
+            ]
+        )
+    }
+    makeModal(theId, ranNum) {
+        this.props.logFunc(theId, ranNum)
+    }
     render(){
         return(
-            <div className="event">
-                <h2>{this.props.event.name}</h2>
-                <button className="details" onClick = {() => this.detailShow()}>Show Details</button>
-                {this.state.showDetails && (
-                    <div className="the-details">{this.props.event.local_date}
-                    <button className="noDetails" onClick = {() => this.detailHide()}>Hide</button>
-                    </div>
-                )}
+            <div className="event" style={{backgroundImage: 'url(default' + this.state.backgroundNum + '.jpg)'}} onClick = {() => this.makeModal(this.props.event.id, this.state.backgroundNum)}>
+                <div className="name-area">
+                    <h2 className="event-name">{this.props.event.name}</h2>
+                </div>              
             </div>
         )
     }

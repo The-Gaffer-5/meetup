@@ -29,25 +29,30 @@ class CitySearch extends Component {
     handleItemClicked = (value, lat, lon) => {
         this.setState({ query: value, suggestions: [] });
         this.props.updateEvents(lat, lon);
+        document.getElementById('search-popup-container').style.display = 'none';
+        document.getElementById('city-searchbar').value = ''      
     }
     render() {
         return(
-        <div className="CitySearch">
-            <InfoAlert text={this.state.infoText} />
-            <h5>Enter a city:</h5>
-            <input
-                type="text"
-                className="city"
-                value={this.state.query}
-                onChange={this.handleInputChanged}
-            />
-            <ul className="suggestions">
-                {this.state.suggestions.map(item => 
-                    <li key={item.name_string} onClick={() => this.handleItemClicked(item.name_string, item.lat, item.lon)}>{item.name_string}</li>    
-                )}
-            </ul>
-         </div>
-            )
+            <div>
+                <div className="CitySearch" id="CitySearch">
+                    <input
+                        type="text"
+                        id="city-searchbar"
+                        className="city-searchbar"
+                        placeholder="City"
+                        // value={this.state.query}
+                        onChange={this.handleInputChanged}
+                    />
+                    <ul className="suggestions">
+                        <InfoAlert className="city-info-alert" text={this.state.infoText} />
+                        {this.state.suggestions.map(item => 
+                            <li key={item.name_string} onClick={() => this.handleItemClicked(item.name_string, item.lat, item.lon)}>{item.name_string}</li>    
+                        )}
+                    </ul>
+                </div>
+            </div>
+        )
     }
 }
 

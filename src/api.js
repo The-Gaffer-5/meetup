@@ -4,25 +4,25 @@ import axios from 'axios';
 async function getSuggestions(query) {
   if (window.location.href.startsWith('http://localhost')) {
     return [
-      {
-        city: 'Munich',
-        country: 'de',
-        localized_country_name: 'Germany',
-        name_string: 'Munich, Germany',
-        zip: 'meetup3',
-        lat: 48.14,
-        lon: 11.58
-      },
-      {
-        city: 'Munich',
-        country: 'us',
-        localized_country_name: 'USA',
-        state: 'ND',
-        name_string: 'Munich, North Dakota, USA',
-        zip: '58352',
-        lat: 48.66,
-        lon: -98.85
-      }
+      // {
+      //   city: 'Munich',
+      //   country: 'de',
+      //   localized_country_name: 'Germany',
+      //   name_string: 'Munich, Germany',
+      //   zip: 'meetup3',
+      //   lat: 48.14,
+      //   lon: 11.58
+      // },
+      // {
+      //   city: 'Munich',
+      //   country: 'us',
+      //   localized_country_name: 'USA',
+      //   state: 'ND',
+      //   name_string: 'Munich, North Dakota, USA',
+      //   zip: '58352',
+      //   lat: 48.66,
+      //   lon: -98.85
+      // }
     ];
   }
 
@@ -38,31 +38,28 @@ async function getSuggestions(query) {
 }
 
 async function getEvents(lat, lon, page) {
+
   if (window.location.href.startsWith('http://localhost')) {
-    return mockEvents.events;
+    return mockEvents;
   }
   if(!navigator.onLine) {
-    const events = localStorage.getItem('lastEvents');
-    return JSON.parse(events);
+    const dataList = localStorage.getItem('lastDataList');
+    return JSON.parse(dataList);
   }
   const token = await getAccessToken();
   if (token) {
     let url = 'https://api.meetup.com/find/upcoming_events?&sign=true&photo-host=public'
       + '&access_token=' + token;
     // lat, lon is optional; if you have a lat and lon, you can add them
-    if (lat && lon) {
-      url += '&lat=' + lat + '&lon=' + lon;
-    }
-    if(page) {
-      url += '&page=' + page;
-    }
+    if (lat && lon) { url += '&lat=' + lat + '&lon=' + lon; }
+    if(page) { url += '&page=' + page; }
     const result = await axios.get(url);
-    const events = result.data.events;
-    if (events.length) { // Check if the events exist
-      localStorage.setItem('lastEvents', JSON.stringify(events));
+    const dataList = result.data;
+    if (dataList.length) { // Check if the events exist
+      localStorage.setItem('lastDataList', JSON.stringify(dataList));
     }
-  
-    return events;
+    localStorage.setItem('lastDataList', JSON.stringify(dataList));
+    return dataList;
   }
 
 }
