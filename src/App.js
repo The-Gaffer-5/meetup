@@ -20,6 +20,7 @@ class App extends Component {
       this.setDistance()
     });
     window.addEventListener('online', this.connectAlert());
+    window.addEventListener('resize', this.windowResize)
   }
 
   state = {
@@ -45,6 +46,13 @@ class App extends Component {
       this.setState({
         onlineStatus: '',
       })
+    }
+  }
+
+  windowResize = (event) => {
+    let width = event.target.innerWidth
+    if(width < 1350) {
+      this.emergencyChartClose()
     }
   }
 
@@ -124,18 +132,18 @@ class App extends Component {
   }
   changeDistanceRadius = (e) => {
     const newDist = e.target.id
+    const convertedRadius = (newDist * 1.44) / 100
     this.setState({
       miles: newDist
     })
-    this.filterWithDistance(newDist)
+    this.filterWithDistance(convertedRadius)
   }
   filterWithDistance = (radius) => {
-    const numberRad = parseInt(radius)
-    if (numberRad === 2) {
+    const numberRadius = radius
       this.setState({filteredEvents: []})
       const inRangeEvents = []
       this.state.events.forEach(event => {
-        if((event.group.lat < this.state.lat + 0.02 && event.group.lat > this.state.lat - 0.02) && (event.group.lon < this.state.lon + 0.02 && event.group.lon > this.state.lon - 0.02) ) {
+        if((event.group.lat < (this.state.lat + numberRadius) && event.group.lat > (this.state.lat - numberRadius)) && (event.group.lon < (this.state.lon + numberRadius) && event.group.lon > (this.state.lon - numberRadius)) ) {
           inRangeEvents.push(event)
         }
       });
@@ -143,72 +151,6 @@ class App extends Component {
       if(this.state.theSearch !== '') {
         this.searchAfterMiles(this.state.theSearch, inRangeEvents)
       }    
-    }
-    if (numberRad === 5) {
-      this.setState({filteredEvents: []})
-      const inRangeEvents = []
-      this.state.events.forEach(event => {
-        if((event.group.lat < this.state.lat + 0.07 && event.group.lat > this.state.lat - 0.07) && (event.group.lon < this.state.lon + 0.07 && event.group.lon > this.state.lon - 0.07) ) {
-          inRangeEvents.push(event)
-        }
-      });
-      this.setState({filteredEvents: inRangeEvents, allInRangeEvents: inRangeEvents})
-            if(this.state.theSearch !== '') {
-        this.searchAfterMiles(this.state.theSearch, inRangeEvents)
-      }  
-    }
-    if (numberRad === 10) {
-      this.setState({filteredEvents: []})
-      const inRangeEvents = []
-      this.state.events.forEach(event => {
-        if((event.group.lat < this.state.lat + 0.14 && event.group.lat > this.state.lat - 0.14) && (event.group.lon < this.state.lon + 0.14 && event.group.lon > this.state.lon - 0.14) ) {
-          inRangeEvents.push(event)
-        }
-      });
-      this.setState({filteredEvents: inRangeEvents, allInRangeEvents: inRangeEvents})
-            if(this.state.theSearch !== '') {
-        this.searchAfterMiles(this.state.theSearch, inRangeEvents)
-      }  
-    }
-    if (numberRad === 25) {
-      this.setState({filteredEvents: []})
-      const inRangeEvents = []
-      this.state.events.forEach(event => {
-        if((event.group.lat < this.state.lat + 0.36 && event.group.lat > this.state.lat - 0.36) && (event.group.lon < this.state.lon + 0.36 && event.group.lon > this.state.lon - 0.36) ) {
-          inRangeEvents.push(event)
-        }
-      });
-      this.setState({filteredEvents: inRangeEvents, allInRangeEvents: inRangeEvents})
-            if(this.state.theSearch !== '') {
-        this.searchAfterMiles(this.state.theSearch, inRangeEvents)
-      }  
-    }
-    if (numberRad === 50) {
-      this.setState({filteredEvents: []})
-      const inRangeEvents = []
-      this.state.events.forEach(event => {
-        if((event.group.lat < this.state.lat + 0.72 && event.group.lat > this.state.lat - 0.72) && (event.group.lon < this.state.lon + 0.72 && event.group.lon > this.state.lon - 0.72) ) {
-          inRangeEvents.push(event)
-        }
-      });
-      this.setState({filteredEvents: inRangeEvents, allInRangeEvents: inRangeEvents})
-            if(this.state.theSearch !== '') {
-        this.searchAfterMiles(this.state.theSearch, inRangeEvents)
-      }  
-    }
-    if (numberRad === 100) {
-      this.setState({filteredEvents: []})
-      const inRangeEvents = []
-      this.state.events.forEach(event => {
-        if((event.group.lat < this.state.lat + 1.44 && event.group.lat > this.state.lat - 1.44) && (event.group.lon < this.state.lon + 1.44 && event.group.lon > this.state.lon - 1.44) ) {
-          inRangeEvents.push(event)
-        }
-      });
-      this.setState({filteredEvents: inRangeEvents, allInRangeEvents: inRangeEvents})
-            if(this.state.theSearch !== '') {
-        this.searchAfterMiles(this.state.theSearch, inRangeEvents)
-      }  
-    }
   }
   searchBarSetState = (query) => {
     this.setState({theSearch: query})
@@ -261,6 +203,9 @@ class App extends Component {
   closeChart = () => {
     document.getElementById('chart-modal-container').style.display = 'none'
   }
+  emergencyChartClose = () => {
+    document.getElementById('chart-modal-container').style.display = 'none'
+  }
   closeChartModal = (e) => {
     if(e.target.id === 'chart-modal-container') {
       document.getElementById('chart-modal-container').style.display = 'none'
@@ -307,15 +252,17 @@ class App extends Component {
             <div className="chart-modal">
               <div className="close-modal-x" onClick={() => this.closeChart()}>X</div>
               <h1 className="modal-title">Events per day</h1>
-              <ResponsiveContainer height={400}>
-                <ScatterChart className="the-chart" margin={{top: 20, right: 20, bottom: 20, left: 20,}}>
-                  <CartesianGrid />
-                  <XAxis type="category" dataKey="date" name="date"/>
-                  <YAxis type="number" dataKey="number" name="number of events" allowDecimals={false}/>
-                  <Tooltip cursor={{ strokeDasharray: '3 3' }} />
-                  <Scatter data={this.getData()} fill="#8884d8" />
-                </ScatterChart>
-              </ResponsiveContainer>
+                <div className='scatter-wrapper'>
+                  <ResponsiveContainer className="responsive-container" height={400}>
+                    <ScatterChart className="the-chart" margin={{top: 20, right: 20, bottom: 20, left: 20,}}>
+                      <CartesianGrid />
+                      <XAxis type="category" dataKey="date" name="date"/>
+                      <YAxis type="number" dataKey="number" name="number of events" allowDecimals={false}/>
+                      <Tooltip cursor={{ strokeDasharray: '3 3' }} />
+                      <Scatter data={this.getData()} fill="#8884d8" />
+                    </ScatterChart>
+                  </ResponsiveContainer>
+                </div>
             </div>
           </div>   
           <NoEventAlert search={this.state.theSearch} events={this.state.filteredEvents} city={this.state.city} miles={this.state.miles}/>

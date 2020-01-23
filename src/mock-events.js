@@ -83,7 +83,7 @@ const mockEvents =
         updated: 1564129835000,
         utc_offset: 7200000,
         waitlist_count: 11,
-        yes_rsvp_count: 15,
+        yes_rsvp_count: 10,
         venue: {
           id: 25966475,
           name: 'Bellevue München',

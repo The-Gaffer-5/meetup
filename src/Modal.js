@@ -42,10 +42,8 @@ class Modal extends Component {
     render(){
         const { selectedModalEvent } = this.props;
         let colors = ['#00465d', '#207996']
-
         if( selectedModalEvent.length !== 0 ) {
             return(
-
                 <div className="modal" onClick = {(e) => this.closeIt(e)}>
                     <div className="modal-content">
                         <div className="the-x" onClick = {() => this.props.close()}>X</div>
@@ -60,7 +58,7 @@ class Modal extends Component {
                         <div className="modal-bottom-half">
                             <div className="the-details">
                             {selectedModalEvent.yes_rsvp_count && selectedModalEvent.rsvp_limit ?
-                            <ResponsiveContainer className="pie-container" height={200}>
+                            <ResponsiveContainer className="pie-container" height={250}>
                             <PieChart width={200} height={200}>
                               <Pie data={this.getData()} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={60} outerRadius={80} label>
                                 {
@@ -70,7 +68,7 @@ class Modal extends Component {
                                 }
                               </Pie>                            
                               <Tooltip />                            
-                              <Legend verticalAlign="top" height={36}>
+                              <Legend className="the-legend" verticalAlign="top" height={36}>
                               <Line name="Attending" type="monotone" dataKey="rsvped" stroke="#8884d8" />
                               <Line name="Spots Open" type="monotone" dataKey="openings" stroke="#82ca9d" />
                               </Legend>                            
@@ -87,7 +85,8 @@ class Modal extends Component {
                 </div>
             </div>
             )
-        } else {
+        } 
+        else {
             return null
         }  
     }

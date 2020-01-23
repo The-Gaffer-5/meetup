@@ -111,8 +111,6 @@ input[type="text"], input[type="number"] {
 
 .next-header {
   background-color: #00465d;
-  /* background-color: fuchsia; */
-  /* background-color: green; */
   margin: 0;
   height: 170px;
   color: #fff;
@@ -327,12 +325,21 @@ border-color: royalblue;
 .chart-modal{
   background-color: #fff;
   width: 80%;
-  height: 80%;
+  height: 95%;
   margin-top: 6%;
   margin-left: 10%;
   border-radius: 5px;
   position: absolute;
   z-index: 1;
+}
+.responsive-container {
+  position: relative;
+  height: 700px !important;
+}
+.scatter-wrapper {
+  position: relative;
+  height: 80%;
+  overflow-y: scroll;
 }
 .modal-title {
   padding-top: 2%;
@@ -442,7 +449,8 @@ height: 175px
   border: 1px solid #888;
   width: 80%;
   border-radius: 10px;
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 .the-x {
   float: right;
@@ -537,8 +545,6 @@ height: 175px
  padding-bottom: 20%;
 }
 
-
-
 /* -------------------Media Styles-------------------- */
 @media (max-width: 1600px) {
   .miles-popup {
@@ -551,6 +557,16 @@ height: 175px
   }
 }
 @media (max-width: 1350px) {
+  .chart-button {
+    display: none;
+  }
+  .chart-modal-container {
+    display: none;
+    opacity: 0;
+  }
+  .chart-modal {
+    display: none;
+  }
   .the-triangle {
     margin-left: 60px;
   }

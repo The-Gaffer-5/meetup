@@ -19,7 +19,6 @@ class Event extends Component {
         const ranNum = Math.floor(Math.random() * 12) + 1
         this.setState({backgroundNum: ranNum})
     }
-
     getData = () => {
         const rsvped = this.props.event.yes_rsvp_count;
         const max = this.props.event.rsvp_limit;

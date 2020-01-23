@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 
 class EventSearch extends Component {
-constructor(props) {
-    super(props)
-    this.state = {
-        query: ''
+    constructor(props) {
+        super(props)
+        this.state = {
+            query: ''
+        }
     }
-}
 
     handleInputChanged = (e) => {
         const inBox = e.target.value
@@ -19,7 +19,6 @@ constructor(props) {
     }
 
     render(){
-
         return (
             <div className="EventSearch">
                 <input
