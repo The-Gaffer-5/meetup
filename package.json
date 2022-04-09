@@ -6,7 +6,7 @@
   "dependencies": {
     "atatus-spa": "^4.0.3",
     "axios": "^0.19.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
     "react-scripts": "3.2.0",
